@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 1,
+    "Name": "Emp1",
+    "Email": "Emp1@gmail.com",
+    "Phone": "123456789"
+  },
+  {
+    "Id": 2,
+    "Name": "Emp2",
+    "Email": "Emp2@gmail.com",
+    "Phone": "123456789"
+  },
+  {
+    "Id": 3,
+    "Name": "Emp3",
+    "Email": "Emp3@gmail.com",
+    "Phone": "123456789"
+  },
+  {
+    "Id": 4,
+    "Name": "Emp4",
+    "Email": "Emp4@gmail.com",
+    "Phone": "123456789"
+  },
+  {
+    "Id": 5,
+    "Name": "Emp5",
+    "Email": "Emp5@gmail.com",
+    "Phone": "123456789"
+  }
+]

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Employee Rating System</title>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="CSS/Rating.css" />
+        <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <h2 class="text-center mt-4">E R S</h2>
+                    <form id="ratingForm">
+                        <label for="employeeName">Employee Name:</label>
+                        <select class="form-control" id="employeeName">
+                            <!-- Employee list will be inserted here -->
+                        </select>
+                        <label for="rating">Rating (1-5):</label>
+                        <div class="rating">
+                            <span class="fa fa-star checked"
+                                onclick="setRating('1')"></span>
+                            <span class="fa fa-star"
+                                onclick="setRating('2')"></span>
+                            <span class="fa fa-star"
+                                onclick="setRating('3')"></span>
+                            <span class="fa fa-star"
+                                onclick="setRating('4')"></span>
+                            <span class="fa fa-star"
+                                onclick="setRating('5')"></span>
+                        </div>
+                        <input type="hidden" id="rating" name="rating" />
+                        <input type="hidden" id="employeeId"
+                            name="employeeId" />
+                        <input type="hidden" id="employeeName"
+                            name="employeeName" />
+                        <input type="hidden" id="employeeRating"
+                            name="employeeRating" />
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Rate
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+      // Fetch the list of employees from the JSON database
+      $.ajax({
+        url: "Data/employee.json",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          // Process the JSON data
+          var employeesHtml = "";
+          $.each(data, function (key, value) {
+            debugger;
+            employeesHtml +=
+              '<option value="' + value.Id + '">' + value.Name + "</option>";
+          });
+          $("#employeeName").html(employeesHtml);
+        },
+        error: function (error) {
+          // Handle the error
+          console.log(error);
+        },
+      });
+
+      //Submit the rating to the JSON database
+      $("#ratingForm").on("submit", function (event) {
+        event.preventDefault();
+        var employeeName = $("#employeeName").val();
+        var rating = $("#rating").val();
+        var currentDate = new Date();
+        var currentDateString = currentDate.toISOString().split("T")[0];
+        $.ajax({
+          url: "Data/employeeRating.json",
+          type: "PUT",
+          dataType: "json",
+          data: {
+            name: employeeName,
+            rating: rating,
+            date: currentDateString,
+          },
+          success: function () {
+            // Handle the success
+            console.log("Rating saved to separate file successfully");
+          },
+          error: function (error) {
+            // Handle the error
+            console.log(error);
+          },
+        });
+      });
+
+      function setRating(rating) {
+        debugger;
+        $(".fa-star").each(function () {
+          if ($(this).index() < rating) {
+            debugger;
+            $(this).addClass("checked");
+          } else {
+            $(this).removeClass("checked");
+          }
+        });
+
+        $("#rating").val(rating);
+        $("#employeeId").val($("#employeeName").val());
+        $("#employeeName").val($("#employeeName option:selected").text());
+        $("#employeeRating").val(rating);
+      }
+    </script>
+    </body>
+</html>
